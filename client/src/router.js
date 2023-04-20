@@ -12,9 +12,6 @@ const routes = [
         name: 'HomeApp',
         component: HomeApp,
         path: '/',
-        meta: {
-            requireAuth: true
-        }
     },
     {
         name: 'RegisterUserApp',
@@ -33,6 +30,9 @@ const router = createRouter({
     routes
 })
 
+// meta: {
+//     requireAuth: true
+// }
 
 router.beforeEach((to, from, next) => {
     console.debug(from)
