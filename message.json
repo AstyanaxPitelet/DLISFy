@@ -1,0 +1,15 @@
+{
+    "validation": {
+        "register": {
+            "message": "L'inscritption s'est effectuer avec succée, vous allez être redirigé",
+            "error": {
+                "0": "Une erreur est survenue lors de l'inscription",
+                "1": "L'adresse mail est déjà utiliser"
+            }
+        },
+        "login": {
+            "message": "",
+            "error": ""
+        }
+    }
+}
