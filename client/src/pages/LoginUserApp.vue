@@ -43,7 +43,7 @@ export default {
             accountService.login(form_data)
                 .then((response) => {
                     accountService.saveToken(response.data.access_token)
-                    this.$router.push({path: '/'})
+                    this.$router.push({path: '/app'})
                 }).catch((err) => {
                     console.log(err)
                 })

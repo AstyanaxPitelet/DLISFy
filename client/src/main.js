@@ -8,6 +8,7 @@ import router from './router'
 
 import axios from 'axios';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const app = createApp(App)
 
@@ -15,4 +16,4 @@ app.config.globalProperties.$axios = axios
 app.config.globalProperties.$apiCountry = "https://restcountries.com/v3.1/all"
 app.config.globalProperties.$api = "http://127.0.0.1:8000"
 
-app.use(bootstrap).use(router).mount('#app')
+app.use(bootstrap).use(router).component('fa', FontAwesomeIcon).mount('#app')

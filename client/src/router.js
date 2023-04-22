@@ -2,6 +2,7 @@ import HomeApp from './pages/HomeApp'
 
 import RegisterUserApp from './pages/RegisterUserApp'
 import LoginUserApp from './pages/LoginUserApp'
+import AppMusicHome from './pages/AppMusicHome'
 
 import {createRouter, createWebHistory} from 'vue-router'
 
@@ -23,6 +24,15 @@ const routes = [
         component: LoginUserApp,
         path: '/login',
     },
+    {
+        name: 'AppMusicHome',
+        component: AppMusicHome,
+        path: '/app',
+        meta: {
+            requireAuth: true,
+            reduireSideBar: true 
+        }
+    },
 ]
 
 const router = createRouter({
@@ -30,9 +40,6 @@ const router = createRouter({
     routes
 })
 
-// meta: {
-//     requireAuth: true
-// }
 
 router.beforeEach((to, from, next) => {
     console.debug(from)

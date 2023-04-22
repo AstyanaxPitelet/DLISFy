@@ -1,5 +1,5 @@
 <template>
-  <main class="vh-100 d-flex flex-row ">
+  <div class="vh-100 d-flex flex-row ">
     <div class="vh-100 w-25 menu-login">
       <div class="box-menu-login d-flex flex-column justify-content-center align-items-center vh-100">
         <div class="title-app text-center">
@@ -14,7 +14,7 @@
     <div class="w-75 app-acc d-flex justify-content-center align-items-center">
       <img class="rotate-img"  src="../../public/img/disk-gde1ea9809_1920.png" alt="">
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
