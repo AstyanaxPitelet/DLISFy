@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-user">
         <div class="d-flex justify-content-end w-100">
-            <a class="text-right w" href="/profil">
+            <a class="text-right w" href="/app/profil">
                 {{ user.name }} - {{ user.firstname }}
             </a>
         </div>

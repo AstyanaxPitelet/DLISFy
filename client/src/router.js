@@ -2,7 +2,11 @@ import HomeApp from './pages/HomeApp'
 
 import RegisterUserApp from './pages/RegisterUserApp'
 import LoginUserApp from './pages/LoginUserApp'
-import AppMusicHome from './pages/AppMusicHome'
+
+import AppMusic from './pages/AppMusic'
+import AppHome from './pages/AppHome'
+import AppProfilUser from './pages/AppProfilUser'
+import AppLibraryUser from './pages/AppLibraryUser'
 
 import {createRouter, createWebHistory} from 'vue-router'
 
@@ -25,13 +29,18 @@ const routes = [
         path: '/login',
     },
     {
-        name: 'AppMusicHome',
-        component: AppMusicHome,
+        name: 'AppMusic',
+        component: AppMusic,
         path: '/app',
         meta: {
             requireAuth: true,
             reduireSideBar: true 
-        }
+        },
+        children: [
+            { path: '/app/home', name: 'AppHome', component: AppHome },
+            { path: '/app/profil', name: 'AppProfilUser', component: AppProfilUser },
+            { path: '/app/library', name: 'AppLibraryUser', component: AppLibraryUser }
+        ]
     },
 ]
 

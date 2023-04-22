@@ -4,7 +4,7 @@
       <h1>Mon logo</h1>
     </div>
     <div class="app-menu d-flex align-items-center justify-content-between h-25 flex-column">
-      <menu-link-app path="/app" icon="home" title="Accueil" />
+      <menu-link-app path="/app/home" icon="home" title="Accueil" />
       <menu-link-app path="/app/library" icon="library_music" title="Bibliothèque" />
       <menu-link-app path="/app/profil" icon="person" title="Profil" />
     </div>

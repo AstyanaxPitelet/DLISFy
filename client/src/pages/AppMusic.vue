@@ -3,9 +3,7 @@
     <side-bar-menu-app />
     <main class="d-flex flex-column">
       <user-menu-app :user="user"/>
-      <div class="app-content">
-        <h1>Hello {{ user.mail }}</h1>
-      </div>
+      <router-view />
     </main>
   </div>
 </template>
@@ -16,7 +14,7 @@ import user_mixin from "../mixins/user_mixin"
 import UserMenuApp from '@/components/UserMenuApp.vue'
 
 export default {
-    name: 'AppMusicHome',
+    name: 'AppMusic',
     mixins: [user_mixin],
     components: {SideBarMenuApp, UserMenuApp}
 }
