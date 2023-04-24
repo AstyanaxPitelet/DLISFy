@@ -39,7 +39,7 @@ const routes = [
         children: [
             { path: '/app/home', name: 'AppHome', component: AppHome },
             { path: '/app/profil', name: 'AppProfilUser', component: AppProfilUser },
-            { path: '/app/library', name: 'AppLibraryUser', component: AppLibraryUser }
+            { path: '/app/library', name: 'AppLibraryUser', component: AppLibraryUser },
         ]
     },
 ]

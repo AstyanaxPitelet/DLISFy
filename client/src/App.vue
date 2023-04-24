@@ -28,7 +28,13 @@ export default {
   --font-user: 'Quicksand', sans-serif;
 }
 
+.page-title {
+  color: var(--primary);
+}
 
+a {
+  text-decoration: none;
+}
 
 
 </style>

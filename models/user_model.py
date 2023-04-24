@@ -1,5 +1,5 @@
-
 from pydantic import BaseModel
+from models.library_model import Library
 
 class User(BaseModel):
     mail: str 
@@ -8,4 +8,5 @@ class User(BaseModel):
     password: str 
     sexe: str 
     dateNaiss: str
-    pays: str 
+    pays: str
+    librarys: list[Library] = []

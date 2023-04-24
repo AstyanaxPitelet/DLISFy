@@ -3,7 +3,7 @@
     <side-bar-menu-app />
     <main class="d-flex flex-column">
       <user-menu-app :user="user"/>
-      <router-view />
+      <router-view class="app-content"/>
     </main>
   </div>
 </template>
@@ -24,5 +24,9 @@ export default {
 main {
   width: 90%;
 
+  .app-content {
+    background: var(--dark-old);
+    height: 90.8vh;
+  }
 }
 </style>

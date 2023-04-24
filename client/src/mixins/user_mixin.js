@@ -14,7 +14,6 @@ export default {
                     Authorization: "Bearer " + accountService.getToken()
                 }
             }).then(response => {
-                console.log(response.data)
                 this.user = response.data
             }).catch(err => {
                 console.log(err)

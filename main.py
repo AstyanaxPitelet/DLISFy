@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from routes.user_routes import user_route
+from routes.music_routes import music_route
 
 
 # Tableau des origins possible
@@ -15,6 +16,7 @@ origins = [
 
 app = FastAPI()
 app.include_router(user_route)
+app.include_router(music_route)
 
 # Configuration du middlware
 app.add_middleware(

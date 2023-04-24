@@ -1,7 +1,7 @@
 <template>
-  <main>
+  <div>
     <h1>Profil for : {{ user.mail }}</h1>
-  </main>
+  </div>
 </template>
 
 <script>
