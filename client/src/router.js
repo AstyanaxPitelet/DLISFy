@@ -7,6 +7,7 @@ import AppMusic from './pages/AppMusic'
 import AppHome from './pages/AppHome'
 import AppProfilUser from './pages/AppProfilUser'
 import AppLibraryUser from './pages/AppLibraryUser'
+import AppLibraryUserMusic from './pages/AppLibraryUserMusic'
 
 import {createRouter, createWebHistory} from 'vue-router'
 
@@ -40,6 +41,7 @@ const routes = [
             { path: '/app/home', name: 'AppHome', component: AppHome },
             { path: '/app/profil', name: 'AppProfilUser', component: AppProfilUser },
             { path: '/app/library', name: 'AppLibraryUser', component: AppLibraryUser },
+            { path: '/app/library/:id', name: 'AppLibraryUserMusic', component: AppLibraryUserMusic },
         ]
     },
 ]

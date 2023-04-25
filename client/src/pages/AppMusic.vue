@@ -26,7 +26,7 @@ main {
 
   .app-content {
     background: var(--dark-old);
-    height: 90.8vh;
+    height: 100%;
   }
 }
 </style>

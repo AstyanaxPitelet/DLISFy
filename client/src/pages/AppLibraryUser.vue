@@ -9,13 +9,13 @@
           <span class="material-symbols-outlined me-2">
             add_circle
           </span>
-          <span>Créer une Playliste</span>
+          <span>Créer une Playlist</span>
         </div>
       </div>
     </div>
     <div class="library-content d-flex flex-wrap">
       <div v-for="(lib, index) in user.librarys" :key="index">
-        <router-link to="/app/library/id" class="card card-library" style="width: 13rem;">
+        <router-link :to="getIdLib(lib.tempId)" class="card card-library" style="width: 13rem;">
           <img class="card-img-top" width="200" height="200" :src="lib.img" >
           <div class="card-body" style="color: #fff;">
             <h5 class="card-title">{{ lib.title }}</h5>
@@ -41,6 +41,9 @@ export default {
       }
     }, 
     methods: {
+      getIdLib(id) {
+        return `/app/library/${id}`
+      },
       handleModal() {
         this.state= false
       },
