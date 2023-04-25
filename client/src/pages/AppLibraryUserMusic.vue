@@ -10,7 +10,7 @@
             </div>
             <div class="header-time-creator">
                 <p>Conçu par {{ library.mail }}</p>
-                <p>Durée : {{ dureeTotal }} - {{ library.musics.length }} titres</p>
+                <p>Durée : {{ dureeTotal }} - {{ nbTitre }} titres</p>
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
                 <span class="material-symbols-outlined me-2">
                   add_circle
                 </span>
-                <span>Créer une Playlist</span>
+                <span>Ajoutez une musique</span>
               </div>
         </div>
         <div class="table-responsive">
@@ -28,8 +28,8 @@
               <thead>
                 <tr style="color: #fff;">
                   <th scope="col">#</th>
-                  <th scope="col">Titre</th>
-                  <th scope="col">Artiste</th>
+                  <th scope="col" style="width: 25%;">Titre</th>
+                  <th scope="col" style="width: 50%;">Artiste</th>
                   <th scope="col">
                     <span class="material-symbols-outlined">
                         schedule
@@ -45,12 +45,7 @@
                     <td>{{ music.artiste }}</td>
                     <td>{{ convertDuree(music.duree) }}</td>
                     <td>
-                        <audio controls>
-                            <source :src="music.music" />
-                        </audio>
-                    </td>
-                    <td>
-                      <span class="material-symbols-outlined me-2 action-cursor">
+                      <span @click="setCurrentMusic(music)" class="material-symbols-outlined me-2 action-cursor">
                           play_arrow
                       </span>
                       <span class="material-symbols-outlined ms-2 action-cursor">
@@ -65,6 +60,30 @@
           </div>
     </div>
     <app-new-music :lib="library" :hidden="state" @changeState="handleCloseModal($event)"/>
+    <div class="d-flex align-items-center justify-content-center flex-column" :hidden="stateMusic" v-if="currentMusic">
+        <div class="audio-player-button p-4 d-flex flex-row align-items-center justify-content-between w-25">
+            <span class="material-symbols-outlined" style="color: #fff;">
+                skip_previous
+            </span>
+            <button @click="this.$refs.audio.play()" class="btn-play-pause d-flex align-items-center">
+                <span class="material-symbols-outlined">
+                    play_arrow
+                </span>
+            </button>
+            <span class="material-symbols-outlined" style="color: #fff;">
+                skip_next
+            </span>
+        </div>
+        <div class="w-100 d-flex align-items-center justify-content-center flex-row">
+            <span class="me-2" style="color: #fff;">{{ currentTimeProgressMusic }}</span>
+            <div class="audio-player">
+                <div class="audio-player__progress" :style="{ width: progress }"></div>
+                <div class="audio-player__thumb" :style="{ left: progress }"></div>
+                <audio ref="audio" :src="currentMusic" @timeupdate="updateProgress"></audio>
+              </div>
+            <span class="ms-2" style="color: #fff;">{{ currentTimeMusic }}</span>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -80,8 +99,11 @@ export default {
         return {
             library: null,
             state: true,
-            dureeTotal: 0,
-            nbTitre: 0
+            stateMusic: true,
+            currentMusic: null,
+            currentTimeMusic: '',
+            currentTimeProgressMusic: '',
+            progress: '0%',
         }
     },
     mounted() {
@@ -95,10 +117,38 @@ export default {
                 console.log(err)
             }) 
     },
+    computed: {
+        nbTitre() {
+            return this.library.musics.length
+        },
+        dureeTotal() {
+            const array = this.library.musics 
+            var duree = 0
+            array.forEach((music) => {
+                duree+=music.duree
+            })
+            return this.convertDuree(duree)
+        }
+    },
     methods: {
+        updateProgress() {
+            try {
+                const audio = this.$refs.audio;
+                this.currentTimeProgressMusic = this.convertDuree(audio.currentTime)
+                const progress = (audio.currentTime / audio.duration) * 100;
+                this.progress = `${progress}%`;
+            } catch(err) {
+                console.log(err)
+            }
+        },
+        setCurrentMusic(music) {
+            this.stateMusic = false
+            this.currentMusic = music.music 
+            this.currentTimeMusic = this.convertDuree(music.duree)
+        },
         convertDuree(duree) {
             const formattedDuration = new Date(duree * 1000).toISOString().substr(14, 5);
-            this.dureeTotal = formattedDuration
+            
             return formattedDuration
         },
         handleModal() {
@@ -112,6 +162,48 @@ export default {
 </script>
 
 <style lang="scss">
+
+.btn-play-pause {
+    border-radius: 50%;
+    padding: 0.5rem;
+    background-color: var(--primary);
+    border: none;
+
+    span {
+        color: var(--dark);
+    }
+}
+
+.audio-player {
+    position: relative;
+    width: 40%;
+    height: 3px;
+    background-color: #fff;
+
+    .audio-player__progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background-color: var(--primary);
+        width: 0%;
+    }
+  
+    .audio-player__thumb {
+        position: absolute;
+        top: -3.7px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out;
+    }
+}
+  
+  
+
 .action-cursor {
     cursor: pointer;
 }

@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             <label class="form-label">Adresse mail : </label>
-            <input type="mail" class="form-control" v-model="frmValue.mail" required>
+            <input type="email" class="form-control" v-model="frmValue.mail" required>
         </div>
         <div class="form-group">
             <label class="form-label">Mot de passe : </label>
@@ -45,11 +45,10 @@
                 </option>
             </select>
         </div>
-        <div  class="alert alert-success" role="alert" v-if="message" required>
-            {{ message }}
-        </div>
-        <div  class="alert alert-danger" role="alert" v-if="error" required>
-            {{ error }}
+        <div class="mt-2 mb-2" v-if="message || error"> 
+            <div :class="setAlert" role="alert" required>
+                {{ setInfo }}
+            </div>
         </div>
         <div class="form-group text-center">
             <button type="submit" class="btn btn-success">
@@ -77,7 +76,7 @@ export default {
             sexes: ['Homme', 'Femme', 'Autre'],
             countrys: [],
             message: '',
-            error: ''
+            error: '',
         }
     },
     mounted() {
@@ -88,21 +87,28 @@ export default {
                 })
             })
     }, 
+    computed: {
+        setAlert() {
+            return this.message ? 'alert alert-success' : 'alert alert-danger'
+        },
+        setInfo() {
+            return this.message ? this.message : this.error
+        }
+    },
     methods: {
         addUser(e) {
             e.preventDefault()
             this.$axios.post(`${this.$api}/user/insert`, this.frmValue)
                 .then((response) => {
-                    console.log(response.data)
-                    if(response.data.success) {
-                        this.message = response.data.message
+                    if(response.status === 201) {
+                        this.message = response.data.detail
                         this.$refs.frmResigter.reset()
                         setTimeout(() => {
                             this.$router.push({ path: '/login'})
                         }, 3000)
-                    } else {
-                        this.error = response.data.message
                     }
+                }).catch(err => {
+                    this.error = err.response.data.detail
                 })
         }
     }

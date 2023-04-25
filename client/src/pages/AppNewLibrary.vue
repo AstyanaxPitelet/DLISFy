@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-    <form  ref="frmMusic" >
+    <form @submit="e => addLibrary(e)" ref="frmLib" >
         <div class="form-group m-1">
             <label class="form-label" style="color: #fff">Titre de la Playlist</label>
             <input type="text" v-model="frmValue.title" class="form-control" >
@@ -69,6 +69,7 @@ export default {
             e.preventDefault()
             this.frmValue.tempId = Date.now()
             this.frmValue.mail = this.$props.user.mail
+            console.log(this.frmValue)
             this.$axios.put(`${this.$api}/lib/insert`, this.frmValue)
                 .then((response) => {
                     if(response.status === 200) {

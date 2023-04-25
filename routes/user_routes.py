@@ -35,13 +35,13 @@ def verify_password(passwordSasie, passwordDb):
     return bcrypt.checkpw(passwordSasie, passwordDb)
 
 def get_user(mail):
-    test = db.users.find_one({"mail": mail})
-    return test
+    user = db.users.find_one({"mail": mail})
+    return user
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail=msg.get_default(),
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
@@ -80,56 +80,51 @@ def authenticate_user(username: str, password: str):
         return False
     return user
 
+# Permet la récupération de l'utlisateur connecter
 @user_route.get("/user/current", response_model=User)
 async def read_users_me(current_user: Annotated[User, Depends(get_current_active_user)]):
     return current_user
 
+# Permet de remplir le formulaire de connexion
 @user_route.post("/user/login", response_model=Token)
 def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    print(form_data.username)
     user = authenticate_user(form_data.username, form_data.password.encode('utf-8'))
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail=msg.get_login()['error'],
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user['mail']}, expires_delta=access_token_expires
     )
+
     return { "access_token": access_token, "token_type": "bearer" }
    
 
-#Route de connexion utlisateur
-@user_route.post("/user/insert")
+# Permet de remplir le formulaire d'inscirption au site
+@user_route.post("/user/insert", status_code=201)
 async def insert_user(user: User):
-    message = {}
-    try:
-        userDb = db.users.find_one({"mail": f"{user.mail}"})
-        if userDb != None: 
-            if userDb['mail'] == user.mail:
-                message = {
-                    "message": msg.get_register()['error']['1'],
-                    "success": False
-                }
-            else: 
-                user.password = hash_password(user.password)
-                result = db.users.insert_one(dict(user))
-                message = {
-                    "message": msg.get_register()['message'],
-                    "success": True
-                }
-        else: 
-            user.password = hash_password(user.password)
-            result = db.users.insert_one(dict(user))
-            message = {
-                "message": msg.get_register()['message'],
-                "success": True
-            }
-    except HTTPException: 
-        message = {
-            "message": msg.get_register()['error']['0'],
-            "success": False
-        }
-    return message
+    userDb = db.users.find_one({"mail": f"{user.mail}"})
+    
+    if userDb:
+        if userDb['mail'] == user.mail:
+            raise HTTPException(
+                status_code=500, 
+                detail=msg.get_register()['error']['1']
+            )
+    
+    user.password = hash_password(user.password)
+    result = db.users.insert_one(dict(user))
+    
+    if not result.acknowledged:
+        raise HTTPException(
+            status_code=500,
+            detail=msg.get_any['default'],
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    return {"detail": msg.get_register()['message']}

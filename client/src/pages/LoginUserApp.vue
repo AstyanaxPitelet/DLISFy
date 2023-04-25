@@ -12,6 +12,11 @@
             <label class="form-label">Mot de passe : </label>
             <input type="password" class="form-control" v-model="frmValue.password" required>
         </div> 
+        <div class="mt-2 mb-2" v-if="error"> 
+            <div class="alert alert-danger" role="alert" required>
+                {{ error }}
+            </div>
+        </div>
         <div class="form-group text-center">
             <button type="submit" class="btn btn-success">
                 Se connecter
@@ -30,7 +35,8 @@ export default {
             frmValue: {
                 username: '',
                 password: ''
-            }
+            },
+            error: ''
         }
     },
     methods: {
@@ -45,7 +51,7 @@ export default {
                     accountService.saveToken(response.data.access_token)
                     this.$router.push({path: '/app/home'})
                 }).catch((err) => {
-                    console.log(err)
+                    this.error = err.response.data.detail
                 })
         }
     }

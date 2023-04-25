@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-    <form @submit="e => addMusic(e)" ref="frmLib" >
+    <form @submit="e => addMusic(e)" ref="frmMusic" >
         <div class="form-group m-1">
             <label class="form-label" style="color: #fff">Titre de la musique</label>
             <input type="text" v-model="frmValue.title"  class="form-control" >
@@ -89,7 +89,12 @@ export default {
         console.log(id)
         this.$axios.put(`${this.$api}/music/insert/${id}`, this.frmValue)
           .then((response) => {
-            console.log(response)
+            if(response.status === 200) {
+              this.$refs.frmMusic.reset()
+              window.location.reload()
+            }
+          }).catch(err => {
+            console.log(err)
           })
       },
       handleClose() {

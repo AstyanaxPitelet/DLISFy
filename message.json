@@ -9,7 +9,9 @@
         },
         "login": {
             "message": "",
-            "error": ""
-        }
+            "error": "Adresse mail ou mot de passe incorrect"
+        },
+        "default": "Une erreur est survenue"
     }
+    
 }

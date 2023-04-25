@@ -22,11 +22,14 @@ async def get_lib_by_id(id: str):
 
 
 @music_route.put("/music/insert/{id}")
-async def insert_lib(id: str, music: Music):
+async def insert_music(id: str, music: Music):
     db.musics.insert_one(dict(music))
     m = db.musics.find_one({"tempId": music.tempId})
     if not m:
-        raise HTTPException('Playlist non trouver', status_code=404)
+        raise HTTPException(status_code=500, detail='Une erreur est survenue')
+    if m['music'] == music.music:
+        db.musics.delete_one({"tempId": music.tempId})
+        raise HTTPException(status_code=500, detail='Titre déjà existant')
     db.librarys.update_one({"tempId": id}, {'$push': {'musics': m}})
     return {"Insertion réussi"}
 
@@ -35,6 +38,6 @@ async def insert_lib(lib: Library):
     db.librarys.insert_one(dict(lib))
     library = db.librarys.find_one({"tempId": lib.tempId})
     if not library: 
-        raise HTTPException('Playlist non trouver', status_code=404)
+        raise HTTPException(status_code=500, detail='Une erreur est survenue')
     db.users.update_one({"mail": lib.mail}, {'$push': {'librarys': library}})
     return {"Insertion réussi"}
