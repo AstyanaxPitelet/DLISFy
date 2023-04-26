@@ -3,7 +3,6 @@ from typing import Union, Annotated
 from fastapi import APIRouter, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pymongo import MongoClient
-import base64
 
 from jose import JWTError, jwt
 import bcrypt
