@@ -89,7 +89,7 @@ export default {
         console.log(id)
         this.$axios.put(`${this.$api}/music/insert/${id}`, this.frmValue)
           .then((response) => {
-            if(response.status === 200) {
+            if(response.status === 201) {
               this.$refs.frmMusic.reset()
               window.location.reload()
             }

@@ -45,7 +45,7 @@
                     <td>{{ music.artiste }}</td>
                     <td>{{ convertDuree(music.duree) }}</td>
                     <td>
-                      <span @click="setCurrentMusic(music)" class="material-symbols-outlined me-2 action-cursor">
+                      <span @click="setCurrentMusic(music)"  class="material-symbols-outlined me-2 action-cursor">
                           play_arrow
                       </span>
                       <span class="material-symbols-outlined ms-2 action-cursor">
@@ -77,10 +77,13 @@
         <div class="w-100 d-flex align-items-center justify-content-center flex-row">
             <span class="me-2" style="color: #fff;">{{ currentTimeProgressMusic }}</span>
             <div class="audio-player">
+
                 <div class="audio-player__progress" :style="{ width: progress }"></div>
                 <div class="audio-player__thumb" :style="{ left: progress }"></div>
                 <audio ref="audio" :src="currentMusic" @timeupdate="updateProgress"></audio>
+                
               </div>
+              
             <span class="ms-2" style="color: #fff;">{{ currentTimeMusic }}</span>
         </div>
     </div>

@@ -72,9 +72,13 @@ export default {
             console.log(this.frmValue)
             this.$axios.put(`${this.$api}/lib/insert`, this.frmValue)
                 .then((response) => {
-                    if(response.status === 200) {
+                    if(response.status === 201) {
                         this.$refs.frmLib.reset()
                         window.location.reload()
+                    }
+                }).catch(err => {
+                    if(err.response.detail.data) {
+                        console.log(err)
                     }
                 })
         },

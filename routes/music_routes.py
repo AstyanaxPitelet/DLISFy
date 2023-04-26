@@ -1,12 +1,8 @@
-from fastapi import APIRouter, Form, UploadFile, File, HTTPException
+from fastapi import APIRouter, HTTPException
 from pymongo import MongoClient
-import uuid
 
-from models.user_model import User
 from models.library_model import Library
 from models.music_model import Music 
-
-IMAGEDIR = "uploads/img-lib/"
 
 music_route = APIRouter()
 
@@ -31,9 +27,7 @@ async def insert_music(id: str, music: Music):
     if not m:
         raise HTTPException(status_code=500, detail='Une erreur est survenue')
     
-    if m['music'] == music.music:
-        db.musics.delete_one({"tempId": music.tempId})
-        raise HTTPException(status_code=500, detail='Titre déjà existant')
+    
     
     db.librarys.update_one({"tempId": id}, {'$push': {'musics': m}})
     return {"Insertion réussi"}

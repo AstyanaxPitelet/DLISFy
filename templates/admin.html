@@ -1,0 +1,52 @@
+{% extends 'header.html' %}
+
+{% block main %}
+<div class="d-flex flex-column align-items-center justify-content-center p-5 ">
+    <div class="table-responsive-infos w-100">
+        <div class="table-title">
+            <h4>Gestion des utilisateurs</h4>
+        </div>
+    </div>
+    <div class="table-responsive w-100">
+        {% if users %}
+        <table class="table table-striped table-hover table-sm ">
+            <thead class="bg-dark">
+              <tr class="text-white">
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Adresse mail</th>
+                <th scope="col">Sexe</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Pays</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+                  <tr>
+                      <th scope="row">{{ loop.index }}</th>
+                      <td>{{ user['name'] }}</td>
+                      <td>{{ user['firstname'] }}</td>
+                      <td>{{ user['mail'] }}</td>
+                      <td>{{ user['sexe'] }}</td>
+                      <td>{{ user['dateNaiss'] }}</td>
+                      <td>{{ user["pays"] }}</td>
+                      <td>
+                          <span onclick="deleteUser('{{ user["_id"] }}')" class="material-symbols-outlined text-danger" style="cursor: pointer;">
+                              delete
+                          </span>
+                      </td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+      </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', path='js_service/admin.js') }}"></script>
+{% endblock %}
