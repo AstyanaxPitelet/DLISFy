@@ -1,44 +1,39 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center vh-100 flex-column">
-    <div class="text-center">
-        <h1>S'inscire</h1>
-    </div>
-    <form ref="frmResigter" class="row form-app"  @submit="e => addUser(e)">
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label class="form-label">Nom : </label>
-                <input type="text"  class="form-control" v-model="frmValue.name" required>
-            </div>
-            <div class="form-group col-md-6">
-                <label class="form-label">Prenom : </label>
-                <input type="text" class="form-control" v-model="frmValue.firstname" required>
-            </div>
+  <div style="background-color: var(--dark-old)" class="d-flex justify-content-center align-items-center vh-100 flex-column">
+    <form ref="frmResigter" class="row form-app w-25 p-3"  @submit="e => addUser(e)">
+        <div class="text-center">
+            <h1>Inscription</h1>
         </div>
         <div class="form-group">
-            <label class="form-label">Adresse mail : </label>
+            <label class="form-label">NOM</label>
+            <input type="text"  class="form-control" v-model="frmValue.name" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">PRENOM</label>
+            <input type="text" class="form-control" v-model="frmValue.firstname" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">ADRESSE MAIL</label>
             <input type="email" class="form-control" v-model="frmValue.mail" required>
         </div>
         <div class="form-group">
-            <label class="form-label">Mot de passe : </label>
-            <input type="password" class="form-control" v-model="frmValue.password" required>
-            
-        </div>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label class="form-label">Sexe : </label>
-                <select class="form-control" v-model="frmValue.sexe" required>
-                    <option v-for="(sexe, index) in sexes" :key="index">
-                        {{ sexe }}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group col-md-6">
-                <label class="form-label">Date de naissance : </label>
-                <input type="date" class="form-control" v-model="frmValue.dateNaiss" required> 
-            </div>
+            <label class="form-label">MOT DE PASSE</label>
+            <input type="password" class="form-control" v-model="frmValue.password" required>  
         </div>
         <div class="form-group">
-            <label class="form-label">Pays : </label>
+            <label class="form-label">SEXE</label>
+            <select class="form-control" v-model="frmValue.sexe" required>
+                <option v-for="(sexe, index) in sexes" :key="index">
+                    {{ sexe }}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">DATE DE NAISSANCE</label>
+            <input type="date" class="form-control" v-model="frmValue.dateNaiss" required> 
+        </div>
+        <div class="form-group">
+            <label class="form-label">PAYS</label>
             <select class="form-control" v-model="frmValue.pays" required>
                 <option v-for="(pays, index) in countrys" :key="index">
                     {{ pays }}
@@ -50,8 +45,8 @@
                 {{ setInfo }}
             </div>
         </div>
-        <div class="form-group text-center">
-            <button type="submit" class="btn btn-success">
+        <div class="form-group text-center mt-1">
+            <button type="submit" class="btn btn-success  w-100">
                 S'enregistrer
             </button>
         </div>
@@ -115,6 +110,34 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.form-app {
+    background-color: #fff;
+    border-radius: 20px;
 
+    > div {
+
+        h1 {
+            font-family: var(--font-user);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        margin-bottom: 1rem;
+
+        input, select {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            border-radius: 0%;
+            transition: 0.2s ease;
+
+            &:focus {
+                outline: none !important;
+                box-shadow: none;
+                border-bottom: 2px solid var(--dark-old);
+            }
+        }
+
+    }
+}
 </style>

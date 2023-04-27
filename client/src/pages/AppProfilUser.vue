@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Profil for : {{ user.mail }}</h1>
+  <div class="app-content">
+    div.
   </div>
 </template>
 

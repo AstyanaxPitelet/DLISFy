@@ -1,24 +1,23 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center vh-100 flex-column">
-    <div class="text-center">
-        <h1>Connexion</h1>
-    </div>
-    <form ref="frmLogin" class="row form-app" @submit="e => login(e)">
-        <div class="form-group">
-            <label class="form-label">Adresse mail : </label>
-            <input type="mail" class="form-control" v-model="frmValue.username" required>
+  <div style="background-color: var(--dark-old)" class="d-flex justify-content-center align-items-center vh-100 flex-column">
+    
+    <form ref="frmLogin" class="row form-app w-25 p-3" @submit="e => login(e)">
+        <div class="text-center">
+            <h1>Connexion</h1>
         </div>
         <div class="form-group">
-            <label class="form-label">Mot de passe : </label>
-            <input type="password" class="form-control" v-model="frmValue.password" required>
+            <input placeholder="Adresse mail" type="email" class="form-control" v-model="frmValue.username" required>
+        </div>
+        <div class="form-group">
+            <input placeholder="Mot de passe" type="password" class="form-control" v-model="frmValue.password" required>
         </div> 
         <div class="mt-2 mb-2" v-if="error"> 
             <div class="alert alert-danger" role="alert" required>
                 {{ error }}
             </div>
         </div>
-        <div class="form-group text-center">
-            <button type="submit" class="btn btn-success">
+        <div class="form-group text-center mt-1">
+            <button type="submit" class="btn btn-success w-100">
                 Se connecter
             </button>
         </div>

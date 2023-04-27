@@ -9,6 +9,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
+from sockets import sio_app
+
 # Tableau des origins possible
 origins = [
     "http://localhost",
@@ -16,7 +18,9 @@ origins = [
     
 ]
 
+
 app = FastAPI()
+
 app.include_router(user_route)
 app.include_router(music_route)
 app.include_router(admin_route)
@@ -32,8 +36,9 @@ app.add_middleware(
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app.mount('/', app=sio_app)
 
+templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):

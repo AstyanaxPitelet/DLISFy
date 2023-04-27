@@ -1,7 +1,7 @@
 <template>
   <aside class="d-flex flex-column align-items-center justify-content-between">
     <div class="app-logo mt-3">
-      <h1>Mon logo</h1>
+      <img src="../assets/logo.png" alt="">
     </div>
     <div class="app-menu d-flex align-items-center justify-content-between h-25 flex-column">
       <menu-link-app path="/app/home" icon="home" title="Accueil" />
