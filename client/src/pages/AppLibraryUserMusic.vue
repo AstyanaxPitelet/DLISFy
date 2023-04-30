@@ -24,33 +24,36 @@
               </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover-test table-borderless ">
+            <table class="table table-borderless">
               <thead>
                 <tr style="color: #fff;">
                   <th scope="col">#</th>
                   <th scope="col" style="width: 25%;">Titre</th>
                   <th scope="col" style="width: 50%;">Artiste</th>
                   <th scope="col">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined ">
                         schedule
-                        </span>
+                    </span>
                   </th>
-                  <th scope="col">Actions</th>
+                  <th scope="col">
+                    Action
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="(music, index) in library.musics" :key="index" style="color: #fff;">
-                    <th scope="row">{{ index+1 }}</th>
-                    <td>{{ music.title }}</td>
-                    <td>{{ music.artiste }}</td>
-                    <td>{{ convertDuree(music.duree) }}</td>
+              <tbody ref="tBody">
+                <tr v-for="(music, index) in library.musics" @mouseover="handleHover(index)" @mouseleave="isNotHover(index)" :id="index" :key="index" style="color: #fff;">
+                    <th >
+                        <span @click="setCurrentMusic(music, index)" style="cursor: pointer; max-width: 5px">{{ index+1 }}</span>
+                    </th>
+                    <td><span>{{ music.title }}</span></td>
+                    <td><span>{{ music.artiste }}</span></td>
                     <td>
-                      <span @click="setCurrentMusic(music)"  class="material-symbols-outlined me-2 action-cursor">
-                          play_arrow
-                      </span>
-                      <span class="material-symbols-outlined ms-2 action-cursor">
-                          delete
-                      </span>
+                        <span >{{ convertDuree(music.duree) }}</span>
+                    </td>
+                    <td>
+                        <span style="cursor: pointer;" class="material-symbols-outlined">
+                            remove
+                        </span>
                     </td>
                 </tr>
                 
@@ -62,7 +65,7 @@
     <app-new-music :lib="library" :hidden="state" @changeState="handleCloseModal($event)"/>
     <div class="d-flex align-items-center justify-content-center flex-column" :hidden="stateMusic" v-if="currentMusic">
         <div class="audio-player-button p-4 d-flex flex-row align-items-center justify-content-between w-25">
-            <span class="material-symbols-outlined" style="color: #fff;">
+            <span @click="previousMusic" class="material-symbols-outlined" style="color: #fff; cursor: pointer;">
                 skip_previous
             </span>
             <button @click="this.$refs.audio.play()" class="btn-play-pause d-flex align-items-center">
@@ -70,7 +73,12 @@
                     play_arrow
                 </span>
             </button>
-            <span class="material-symbols-outlined" style="color: #fff;">
+            <button @click="this.$refs.audio.pause()" class="btn-play-pause d-flex align-items-center">
+                <span class="material-symbols-outlined">
+                    pause
+                </span>
+            </button>
+            <span @click="nextMusic" class="material-symbols-outlined" style="color: #fff; cursor: pointer;">
                 skip_next
             </span>
         </div>
@@ -107,6 +115,8 @@ export default {
             currentTimeMusic: '',
             currentTimeProgressMusic: '',
             progress: '0%',
+            isHoverPlay: false,
+            actualIndex: null,
         }
     },
     mounted() {
@@ -131,9 +141,38 @@ export default {
                 duree+=music.duree
             })
             return this.convertDuree(duree)
-        }
+        },
+        isIcon() {
+            return this.playOrNot.isIcon ? 'material-symbols-outlined' : ''
+        },
     },
     methods: {
+        handleHover(index) {
+            this.$refs.tBody.childNodes.forEach((tr) => {
+                if(tr.id) {
+                    if(parseInt(tr.id) === index) {
+                        tr.childNodes[0].children[0].innerText = 'play_arrow'
+                        tr.childNodes[0].children[0].classList.add('material-symbols-outlined')
+                    }
+                }
+            })
+        },
+        isNotHover(index) {
+            this.$refs.tBody.childNodes.forEach((tr) => {
+                if(tr.id) {
+                    if(parseInt(tr.id) === index) {
+                        tr.childNodes[0].children[0].innerText = index+1
+                        tr.childNodes[0].children[0].classList.remove('material-symbols-outlined')
+                    }
+                }
+            })
+        },
+        previousMusic() {
+            this.setCurrentMusic(this.library.musics.find((music, index) => index < this.actualIndex))
+        },
+        nextMusic() {
+            this.setCurrentMusic(this.library.musics.find((music, index) => index > this.actualIndex))
+        },
         updateProgress() {
             try {
                 const audio = this.$refs.audio;
@@ -144,7 +183,8 @@ export default {
                 console.log(err)
             }
         },
-        setCurrentMusic(music) {
+        setCurrentMusic(music, index) {
+            this.actualIndex = index
             this.stateMusic = false
             this.currentMusic = music.music 
             this.currentTimeMusic = this.convertDuree(music.duree)
@@ -211,8 +251,12 @@ export default {
     cursor: pointer;
 }
 
-.table-hover-test tbody tr:hover  {
-    background-color: #2a2a2a;
+tbody tr {
+    width: 100%;
+    transition: 0.2s ease;
+    &:hover  {
+        background-color: #2a2a2a;
+    }
 }
 
 .header-user-music {
